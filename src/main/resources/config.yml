@@ -1,0 +1,44 @@
+# Welcome to configuring PrisonRankup, I will be here to guide you through this config setup
+# First let me introduce myself, I am Mazen. I consider myself an expert in configuring Plugins and YAML configs and the average Java Developer.
+# First thing I want you to do is to set the prefix (What comes before the message) for the plugin to use. Keep the speech marks please to avoid errors.
+Prefix: '&a[&bPrison&6-&bRankup&a]'
+#Do not touch this!
+version: 2.0
+# Next thing I want you to do is set the message you want it to be when somebody ranks up. Keep the speech marks here as well.
+# The %player% will be replaced with the players name, and the %rank% will be replaced with the rank they ranked up to.
+Rankup BC Message: '&3%player% &6has ranked up to &3%rank%'
+# Now, the most important part of this plugin is the rankup ladder
+groups:
+#Heres an example of the format of how it should be:
+# rank name:price
+#DO NOT REMOVE THE # FROM THE ABOVE!
+   - A:30
+   - B:100
+   - C:300
+#Here, I will be asking you to put the first rank on the ladder in this example A
+First Rank: 'A'
+# As well as the last rank to assure that we can message the player that he is at the end of the ladder
+Last Rank: 'C'
+# This message is the message we will send to the player if he is the highest rank.
+Highest Rank MSG: '&6 You are already the highest rank!'
+# This next one is if you want to use a timed requirement for your rankup system, set it to true if yes. Default is false;
+Timed Requirement: false
+# Now we're if you set it to true you will have to set a certain time (in seconds) that you want to be done for the rank requirement
+Time Interval: 0.0
+# Here you will write what the time is based on, seconds, minutes or hours. Spelling does matter!
+Time type: Seconds
+# If you want, I added an option where you can choose if you want to make it so that the interval is added to every Rankup Sequence
+Interval on all ranks: false
+# Now you're almost there! Theres just one last part, If you're switching from Rankup and/or majority of Rankup plugins set this to true. If not, set it to false.
+# What this does is check if the player has a rank that is listed in groups (Every minute) and if so, makes a profile with that rank.
+Transfer ranks to profile: false
+# Set the next item to false if you do not want to use the updater
+update: true
+# Set this to true if you wish to enable debug mode
+debug: false
+# This is the format of the ranks which will appear when a player does /ranks
+#Variables are: %price%, %rank%
+ranks-format: '&5[&3%rank%&5]&6: %price%'
+# Here, is the message the player will recieve when he doesn't have enough money to rankup
+#Varaibles are the same as the ones shown above
+not-enough-money: '&6You need &2$%price% &6 to rankup to &2%rank%'

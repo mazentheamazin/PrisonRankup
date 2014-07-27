@@ -1,0 +1,10 @@
+name: PrisonRankup
+version: 3.0
+main: io.mazenmc.prisonrankup.PrisonRankupPlugin
+commands:
+  rankup:
+    description: Rankup
+    aliases: [rnkup, erankup, rankup]
+  ranks:
+    description: Displays available ranks
+    aliases: [rnks, eranks, ernks]
