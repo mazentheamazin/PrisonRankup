@@ -38,6 +38,19 @@ public class RankManager extends Manager{
         return null;
     }
 
+    public Rank getRank(int index) {
+        return ranks.get(index);
+    }
+
+    public int indexOf(Rank rank) {
+        return ranks.indexOf(rank);
+    }
+
+    @Override
+    public void cleanup() {
+        instance = null;
+    }
+
     public static RankManager getInstance() {
         return instance;
     }

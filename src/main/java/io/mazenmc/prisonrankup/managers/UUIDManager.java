@@ -1,5 +1,6 @@
 package io.mazenmc.prisonrankup.managers;
 
+import io.mazenmc.prisonrankup.PrisonRankupPlugin;
 import io.mazenmc.prisonrankup.enums.PrisonRankupConfig;
 import io.mazenmc.prisonrankup.utils.StringUtil;
 import io.mazenmc.prisonrankup.utils.UUIDUtil;
@@ -19,7 +20,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
-import static io.mazenmc.prisonrankup.PrisonRankupPlugin.getInstance;
 import static io.mazenmc.prisonrankup.PrisonRankupPlugin.log;
 
 public class UUIDManager extends Manager {
@@ -29,7 +29,6 @@ public class UUIDManager extends Manager {
     private Map<UUID, String> uuidData = new HashMap<>();
     private JSONParser jsonParser = new JSONParser();
     private PrisonRankupConfig dataConfig = PrisonRankupConfig.DATA;
-
 
     private UUIDManager() {
         update();
@@ -85,7 +84,7 @@ public class UUIDManager extends Manager {
                     }
                 }
             }catch(Exception ex) {
-                getInstance().getLogger().log(Level.SEVERE, StringUtil.buildString("Unable to retrieve a player name by the UUID of ", uuid.toString(),
+                PrisonRankupPlugin.getInstance().getLogger().log(Level.SEVERE, StringUtil.buildString("Unable to retrieve a player name by the UUID of ", uuid.toString(),
                         " due to ", ex.getMessage()), ex);
             }
         }
@@ -137,7 +136,16 @@ public class UUIDManager extends Manager {
     }
 
     /**
-     * Saves all modified UUID data to the YML
+     * Retruns if the UUID data contains a certain player
+     * @param name Player's name
+     * @return If the UUID data contains a certain player
+     */
+    public boolean contains(String name) {
+        return uuidData.containsValue(name);
+    }
+
+    /**
+     * Saves all modified UUID data to data.yml
      */
     public void save() {
         ConfigurationSection userSection = dataConfig.getConfigurationSection("users");
@@ -162,5 +170,16 @@ public class UUIDManager extends Manager {
         }
 
         dataConfig.save();
+    }
+
+    public static UUIDManager getInstance() {
+        return instance;
+    }
+
+    @Override
+    public void cleanup() {
+        instance = null;
+
+        save();
     }
 }

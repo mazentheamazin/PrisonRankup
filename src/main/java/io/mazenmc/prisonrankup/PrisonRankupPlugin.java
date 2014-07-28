@@ -1,5 +1,6 @@
 package io.mazenmc.prisonrankup;
 
+import io.mazenmc.prisonrankup.enums.PrisonRankupConfig;
 import io.mazenmc.prisonrankup.managers.Manager;
 import io.mazenmc.prisonrankup.utils.ClassFinder;
 import org.bukkit.event.Listener;
@@ -15,6 +16,10 @@ public class PrisonRankupPlugin extends JavaPlugin{
     public void onEnable() {
         //Define instances
         instance = this;
+
+        //Save default configurations
+        PrisonRankupConfig.DATA.saveDefaultConfig();
+        PrisonRankupConfig.CONFIG.saveDefaultConfig();
 
         //Register listeners
         try{
