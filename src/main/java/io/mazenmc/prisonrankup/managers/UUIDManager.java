@@ -69,14 +69,21 @@ public class UUIDManager extends Manager {
             // NOTE: Not running this async due to that it should be called at startup, and this data may be required before it is unable to be retrieved
             try{
                 //Define the URL and open the connection
-                URL url = new URL(StringUtil.buildString("https://sessionserver.mojang.com/session/minecraft/profile/", uuid.toString()));
+                URL url = new URL(StringUtil.buildString("https://sessionserver.mojang.com/session/minecraft/profile/", UUIDUtil.idToString(uuid)));
                 URLConnection connection = url.openConnection();
 
                 //Read the contents of the said page and parse them into a JSONArray
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 JSONArray array = (JSONArray) jsonParser.parse(reader);
 
-                for(JSONObject object : )
+                for(Object object : array) {
+                    JSONObject jsonObject = (JSONObject) object;
+                    String name;
+
+                    if((name = (String) (jsonObject.get("name"))) != null) {
+                        uuidData.put(uuid, name);
+                    }
+                }
             }catch(Exception ex) {
                 getInstance().getLogger().log(Level.SEVERE, StringUtil.buildString("Unable to retrieve a player name by the UUID of ", uuid.toString(),
                         " due to ", ex.getMessage()), ex);
