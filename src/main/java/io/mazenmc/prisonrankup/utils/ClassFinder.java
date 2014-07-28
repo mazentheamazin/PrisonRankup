@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-public class ClassFinder {
+public final class ClassFinder {
 
     public static <T> List<Class<? extends T>> find(String pkg, Class<T> filter, File f) throws Exception {
         List<Class<? extends T>> classes = new ArrayList<>();

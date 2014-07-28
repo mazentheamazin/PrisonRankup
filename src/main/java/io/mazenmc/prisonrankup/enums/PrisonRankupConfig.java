@@ -18,7 +18,8 @@ import static io.mazenmc.prisonrankup.PrisonRankupPlugin.*;
 
 public enum PrisonRankupConfig {
     
-    CONFIG(getInstance().getConfig(), new File(getInstance().getDataFolder(), "config.yml"));
+    CONFIG(getInstance().getConfig(), new File(getInstance().getDataFolder(), "config.yml")),
+    DATA(getInstance().getConfig(), new File(getInstance().getDataFolder(), "data.yml"));
     
     private FileConfiguration config;
     private File file;
@@ -288,5 +289,9 @@ public enum PrisonRankupConfig {
             log("Unable to reload " + file.getName() + " due to " + ex.getMessage() + "... priting stacktrace");
             ex.printStackTrace();
         }
+    }
+
+    public void saveDefaultConfig() {
+        getInstance().saveResource(file.getName(), false);
     }
 }
