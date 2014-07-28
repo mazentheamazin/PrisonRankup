@@ -91,7 +91,76 @@ public class UUIDManager extends Manager {
         }
     }
 
+
+    /**
+     * Gets the UUID from a player's name, will autocomplete if possible
+     * @param name Player's name
+     * @return Found UUID
+     */
+    public UUID getUUID(String name) {
+        return getUUID(name, true);
+    }
+
+    /**
+     * Gets the UUID from a player's name
+     * @param name Player's name
+     * @param autocomplete If you want the system to autocomplete your name if possible
+     * @return Found UUID
+     */
+    public UUID getUUID(String name, boolean autocomplete) {
+        for(Map.Entry<UUID, String> entry : uuidData.entrySet()) {
+            if((entry.getValue().startsWith(name) && autocomplete) || entry.getValue().equals(name))
+                return entry.getKey();
+        }
+
+        return null;
+    }
+
+    /**
+     * Updates a players name in-case of a change
+     * @param id Player's ID
+     * @param name Player's name
+     */
+    public void updateName(UUID id, String name) {
+        uuidData.remove(id);
+
+        uuidData.put(id, name);
+    }
+
+    /**
+     * Gets the players name by his ID
+     * @param id Player's ID
+     * @return Found name
+     */
+    public String getName(UUID id) {
+        return uuidData.get(id);
+    }
+
+    /**
+     * Saves all modified UUID data to the YML
+     */
     public void save() {
-        // TODO: Save all new data
+        ConfigurationSection userSection = dataConfig.getConfigurationSection("users");
+
+        for(Map.Entry<UUID, String> entry : uuidData.entrySet()) {
+            /*  Memory data */
+            UUID id = entry.getKey();
+            String idRep = UUIDUtil.idToString(id);
+            String name = entry.getValue();
+
+            /* Config data */
+            String configName = userSection.getString(StringUtil.buildString(idRep, ".name"));
+
+            if(!userSection.contains(idRep)) {
+                continue; // Not safe to save his profile without a rank
+            }
+
+            if(!name.equals(configName)) {
+                // Update his name
+                userSection.set(StringUtil.buildString(idRep, ".name"), name);
+            }
+        }
+
+        dataConfig.save();
     }
 }
