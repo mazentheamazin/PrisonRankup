@@ -65,6 +65,10 @@ public class DataManager extends Manager{
         return false;
     }
 
+    public List<PRPlayer> getPlayers() {
+        return players;
+    }
+
     @Override
     public void cleanup() {
         instance = null;
