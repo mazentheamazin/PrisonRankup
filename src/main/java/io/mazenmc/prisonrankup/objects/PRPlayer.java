@@ -1,20 +1,17 @@
 package io.mazenmc.prisonrankup.objects;
 
 import io.mazenmc.prisonrankup.PrisonRankupPlugin;
-import io.mazenmc.prisonrankup.exceptions.PlayerNotOnlineException;
-import io.mazenmc.prisonrankup.managers.RankManager;
 import io.mazenmc.prisonrankup.managers.UUIDManager;
 import io.mazenmc.prisonrankup.managers.VaultManager;
 import io.mazenmc.prisonrankup.utils.UUIDUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
-import static io.mazenmc.prisonrankup.enums.PrisonRankupConfig.*;
+import static io.mazenmc.prisonrankup.enums.PrisonRankupConfig.DATA;
 import static io.mazenmc.prisonrankup.managers.RankManager.getInstance;
 
 public class PRPlayer {

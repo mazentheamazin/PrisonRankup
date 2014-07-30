@@ -1,7 +1,9 @@
 package io.mazenmc.prisonrankup;
 
 import io.mazenmc.prisonrankup.enums.PrisonRankupConfig;
+import io.mazenmc.prisonrankup.managers.DataManager;
 import io.mazenmc.prisonrankup.managers.Manager;
+import io.mazenmc.prisonrankup.managers.UUIDManager;
 import io.mazenmc.prisonrankup.utils.ClassFinder;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -49,6 +51,10 @@ public class PrisonRankupPlugin extends JavaPlugin{
     }
 
     public void onDisable() {
+        //Save all data
+        DataManager.getInstance().save();
+        UUIDManager.getInstance().save();
+
         //Avoid memory leaks
         cleanup();
         instance = null;

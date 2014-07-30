@@ -6,7 +6,8 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
-import static org.bukkit.Bukkit.*;
+import static org.bukkit.Bukkit.getPluginManager;
+import static org.bukkit.Bukkit.getServer;
 
 public class VaultManager extends Manager{
 
