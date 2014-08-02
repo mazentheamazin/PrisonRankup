@@ -1,6 +1,7 @@
 package io.mazenmc.prisonrankup.objects;
 
 import io.mazenmc.prisonrankup.PrisonRankupPlugin;
+import io.mazenmc.prisonrankup.enums.Untitled;
 import io.mazenmc.prisonrankup.managers.UUIDManager;
 import io.mazenmc.prisonrankup.managers.VaultManager;
 import io.mazenmc.prisonrankup.utils.UUIDUtil;
@@ -136,7 +137,21 @@ public class PRPlayer {
      * @return If said player can rankup
      */
     public boolean canRankup() {
-        return VaultManager.getInstance().getEconomy().getBalance(offlinePlayer) >= nextRank.getPrice().getValue();
+        return (VaultManager.getInstance().getEconomy().getBalance(offlinePlayer) >= nextRank.getPrice().getValue()) || (currentRank == nextRank);
+    }
+
+    /**
+     * Gets why a player can't rankup
+     * @return Why a player can't rankup
+     */
+    public Untitled getReason() {
+       if(VaultManager.getInstance().getEconomy().getBalance(offlinePlayer) >= nextRank.getPrice().getValue()) {
+           return Untitled.NOHASMONEY;
+       }else if(currentRank == nextRank) {
+           return Untitled.HASMUCHRANK;
+       }else{
+           return Untitled.KTHXBAI;
+       }
     }
 
     public ConfigurationSection getSection() {
@@ -160,6 +175,15 @@ public class PRPlayer {
         }
 
         nextRank = getInstance().getRank(crIndex + 1);
+    }
+
+    /**
+     * Gets the balance of the player from Vault
+     *
+     * @return Player's balance
+     */
+    public double getBalance() {
+        return VaultManager.getInstance().getEconomy().getBalance(offlinePlayer);
     }
 
 }
