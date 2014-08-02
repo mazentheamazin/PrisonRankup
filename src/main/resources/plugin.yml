@@ -5,6 +5,8 @@ commands:
   rankup:
     description: Rankup
     aliases: [rnkup, erankup, rankup]
+    permission: prisonrankup.rankup
   ranks:
     description: Displays available ranks
     aliases: [rnks, eranks, ernks]
+    permission: prisonrankup.ranks
