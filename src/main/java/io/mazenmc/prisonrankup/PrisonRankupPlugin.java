@@ -16,14 +16,14 @@ public class PrisonRankupPlugin extends JavaPlugin{
     private static PrisonRankupPlugin instance;
 
     public void onEnable() {
-        //Define instances
+        // Define instances
         instance = this;
 
-        //Save default configurations
+        // Save default configurations
         PrisonRankupConfig.DATA.saveDefaultConfig();
         PrisonRankupConfig.CONFIG.saveDefaultConfig();
 
-        //Register listeners
+        // Register listeners
         try{
             for(Class<?> cls : ClassFinder.find("io.mazenmc.prisonrankup.listeners", Listener.class, this)) {
                 getServer().getPluginManager().registerEvents(cls.asSubclass(Listener.class).newInstance(), this);
@@ -36,7 +36,7 @@ public class PrisonRankupPlugin extends JavaPlugin{
             return;
         }
 
-        //Register subcommands
+        // Register subcommands
         try{
             for(Class<?> cls : ClassFinder.find("io.mazenmc.prisonrankup.subcommands", Object.class, this)) {
                 cls.newInstance();
@@ -51,11 +51,11 @@ public class PrisonRankupPlugin extends JavaPlugin{
     }
 
     public void onDisable() {
-        //Save all data
+        // Save all data
         DataManager.getInstance().save();
         UUIDManager.getInstance().save();
 
-        //Avoid memory leaks
+        // Avoid memory leaks
         cleanup();
         instance = null;
     }

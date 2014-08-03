@@ -29,20 +29,25 @@ public class Stats extends SubCommand {
 
     @Override
     public void onExecute(CommandSender sender, Command cmd, String label, String[] args) {
+        // Check if the player has the permission to run the command
         if(!(sender.hasPermission("prisonrankup.stats"))) {
             sender.sendMessage(LangUtil.error("You do not have permission for this command"));
             return;
         }
 
+        // Check if the player has provided sufficient arguments
         if(CommandUtil.checkArgs(1, args, sender)) {
             return;
         }
 
+        // Get the rank, if null inform the sender and exit the command
         Rank rank = RankManager.getInstance().getRank(args[0]);
 
         if(CommandUtil.notNull(rank, LangUtil.error("ERROR: Rank provided does not exist"), sender)) {
             return;
         }
+
+        //Provide player with statistics found
 
         List<PRPlayer> players = rank.getPlayers();
         StringBuilder stringBuilder = new StringBuilder();

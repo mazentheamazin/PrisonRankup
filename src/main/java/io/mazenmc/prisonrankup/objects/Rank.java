@@ -13,6 +13,10 @@ public class Rank {
     private String name;
     private Price price;
 
+    /**
+     * This constuctor shouldn't be used due to RankManager#getRank(String)
+     * @param name
+     */
     public Rank(String name) {
         Rank tmpRank;
 

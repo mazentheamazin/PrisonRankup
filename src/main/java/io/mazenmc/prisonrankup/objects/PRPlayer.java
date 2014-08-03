@@ -154,6 +154,10 @@ public class PRPlayer {
        }
     }
 
+    /**
+     * Gets the section in config that belongs to said player
+     * @return Said section
+     */
     public ConfigurationSection getSection() {
         return profile;
     }
@@ -179,7 +183,6 @@ public class PRPlayer {
 
     /**
      * Gets the balance of the player from Vault
-     *
      * @return Player's balance
      */
     public double getBalance() {

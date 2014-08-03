@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 public abstract class SubCommand {
 
-    public SubCommand(String cmdName) {
+    private SubCommand(String cmdName) {
         CommandManager.getInstance().registerSubCommand(cmdName, this);
     }
 

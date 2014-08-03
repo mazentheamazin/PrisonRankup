@@ -26,21 +26,26 @@ public class Get extends SubCommand {
 
     @Override
     public void onExecute(CommandSender sender, Command cmd, String label, String[] args) {
+        // Check if the sender has the permission to run this command
         if(!(sender.hasPermission("prisonrankup.get"))) {
             sender.sendMessage(LangUtil.error("You do not have permission for this command!"));
             return;
         }
 
+        // Check if the sender has provided sufficient arguments
         if(CommandUtil.checkArgs(1, args, sender)) {
             return;
         }
 
+        // Get the player from stored data, if null inform the sender and exit the method
         PRPlayer player = DataManager.getInstance().getPlayer(args[0]);
 
         if(CommandUtil.notNull(player, LangUtil.error("ERROR: User " + args[0] + " has not joined the server nor manually entered in the data.yml"),
                 sender)) {
             return;
         }
+
+        // Provide the sender with found data
 
         sender.sendMessage(ChatColor.GREEN + "----------" + ChatColor.translateAlternateColorCodes('&', Message.PREFIX.toString().replaceAll(" ", "") +
                 "---------"));

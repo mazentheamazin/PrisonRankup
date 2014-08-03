@@ -24,11 +24,13 @@ public class Reload extends SubCommand {
 
     @Override
     public void onExecute(CommandSender sender, Command cmd, String label, String[] args) {
+        // Check if the player has the permission to run the command
         if(!(sender.hasPermission("prisonrankup.reload"))) {
             sender.sendMessage(LangUtil.error("You do not have permission to use this command!"));
             return;
         }
 
+        // Reload the config and update the Rank Manager and Message enum
         PrisonRankupConfig.CONFIG.reload();
         RankManager.getInstance().update();
         Message.refresh();

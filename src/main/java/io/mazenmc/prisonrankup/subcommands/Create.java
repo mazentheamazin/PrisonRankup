@@ -28,10 +28,12 @@ public class Create extends SubCommand {
 
     @Override
     public void onExecute(CommandSender sender, Command cmd, String label, String[] args) {
+        // Check if sender has permission to this command
         if(!(sender.hasPermission("prisonrankup.create"))) {
             sender.sendMessage(LangUtil.error("You do not have permission for this command!"));
         }
 
+        // Check if sender provided enough arguments
         if(CommandUtil.checkArgs(2, args, sender)) {
             return;
         }
@@ -39,6 +41,7 @@ public class Create extends SubCommand {
         double price;
         String name;
 
+        //Define variables, if not applicable inform the sender and exit the method
         name = args[0];
 
         try{
@@ -48,10 +51,13 @@ public class Create extends SubCommand {
             return;
         }
 
+        // Get the list from config
         List<String> configList = PrisonRankupConfig.CONFIG.getStringList("groups");
 
+        // Add the new entry at the end of the list
         configList.add(configList.size(), name + ':' + price);
 
+        // Update the config and RankManager with new data
         PrisonRankupConfig.CONFIG.set("groups", configList);
         PrisonRankupConfig.CONFIG.save();
         RankManager.getInstance().update();

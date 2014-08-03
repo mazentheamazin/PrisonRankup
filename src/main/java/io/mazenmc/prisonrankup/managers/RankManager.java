@@ -17,6 +17,9 @@ public class RankManager extends Manager{
         update();
     }
 
+    /**
+     * Updates data from config
+     */
     public void update() {
         ranks.clear();
 
@@ -25,10 +28,19 @@ public class RankManager extends Manager{
         }
     }
 
+    /**
+     * Returns all ranks defined in config
+     * @return All rnaks defined in config
+     */
     public List<Rank> getRanks() {
         return Collections.unmodifiableList(ranks);
     }
 
+    /**
+     * Gets the rank from name
+     * @param name Name you wish to get said rank from
+     * @return Rank found
+     */
     public Rank getRank(String name) {
         for(Rank rank : ranks) {
             if(rank.getName().equals(name))
@@ -38,10 +50,20 @@ public class RankManager extends Manager{
         return null;
     }
 
+    /**
+     * Gets the rank from index on list
+     * @param index Index you wish to get said rank from
+     * @return Rank found
+     */
     public Rank getRank(int index) {
         return ranks.get(index);
     }
 
+    /**
+     * Gets the index of rank from the list
+     * @param rank Rank you wish to get the index of
+     * @return Index of rank
+     */
     public int indexOf(Rank rank) {
         return ranks.indexOf(rank);
     }
@@ -51,6 +73,10 @@ public class RankManager extends Manager{
         instance = null;
     }
 
+    /**
+     * Returns an instance of said object
+     * @return Instance of object
+     */
     public static RankManager getInstance() {
         return instance;
     }

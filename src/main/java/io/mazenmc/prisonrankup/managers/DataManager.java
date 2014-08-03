@@ -21,16 +21,26 @@ public class DataManager extends Manager{
         update();
     }
 
+    /**
+     * Updates all information about players from data.yml. All changes will be lost.
+     */
     public void update() {
         for(String s : dataConfig.getConfigurationSection("users").getKeys(false)) {
             addPlayer(UUIDManager.getInstance().getName(UUIDUtil.stringToID(s)));
         }
     }
 
+    /**
+     * Add a player to the list
+     * @param name Name of said player
+     */
     public void addPlayer(String name) {
         players.add(new PRPlayer(name));
     }
 
+    /**
+     * Save all changes to the data.yml
+     */
     public void save() {
         for(PRPlayer player : players) {
             // First make the variables for easy access
@@ -47,6 +57,11 @@ public class DataManager extends Manager{
         }
     }
 
+    /**
+     * Gets a player from the list by his name
+     * @param name Name of said player
+     * @return Found PRPlayer object
+     */
     public PRPlayer getPlayer(String name) {
         for(PRPlayer player : players) {
             if(player.getName().startsWith(name))
@@ -56,6 +71,11 @@ public class DataManager extends Manager{
         return null;
     }
 
+    /**
+     * Returns if the list contains a UUID
+     * @param id ID you wish to check
+     * @return if the list contains a UUID
+     */
     public boolean contains(UUID id) {
         for(PRPlayer player : players) {
             if(player.getID().equals(id))
@@ -65,6 +85,10 @@ public class DataManager extends Manager{
         return false;
     }
 
+    /**
+     * Returns all the players on the list
+     * @return All players on the list
+     */
     public List<PRPlayer> getPlayers() {
         return players;
     }
@@ -76,6 +100,10 @@ public class DataManager extends Manager{
         save();
     }
 
+    /**
+     * Returns an instance of said object
+     * @return Instance of object
+     */
     public static DataManager getInstance() {
         return instance;
     }

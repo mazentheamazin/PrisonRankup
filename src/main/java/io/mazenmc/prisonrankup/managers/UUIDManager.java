@@ -24,8 +24,10 @@ import static io.mazenmc.prisonrankup.PrisonRankupPlugin.log;
 
 public class UUIDManager extends Manager {
 
+    /* Static Objects */
     private static UUIDManager instance = new UUIDManager();
 
+    /* UUID Data */
     private Map<UUID, String> uuidData = new HashMap<>();
     private JSONParser jsonParser = new JSONParser();
     private PrisonRankupConfig dataConfig = PrisonRankupConfig.DATA;
