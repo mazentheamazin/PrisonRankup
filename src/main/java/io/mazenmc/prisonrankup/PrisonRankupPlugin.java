@@ -1,9 +1,12 @@
 package io.mazenmc.prisonrankup;
 
 import io.mazenmc.prisonrankup.enums.PrisonRankupConfig;
+import io.mazenmc.prisonrankup.managers.CommandManager;
 import io.mazenmc.prisonrankup.managers.DataManager;
 import io.mazenmc.prisonrankup.managers.Manager;
 import io.mazenmc.prisonrankup.managers.UUIDManager;
+import io.mazenmc.prisonrankup.objects.Command;
+import io.mazenmc.prisonrankup.objects.SubCommand;
 import io.mazenmc.prisonrankup.utils.ClassFinder;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -36,10 +39,24 @@ public class PrisonRankupPlugin extends JavaPlugin{
             return;
         }
 
+        // Register commands
+        try{
+            for(Class<? extends Command> cls : ClassFinder.find("io.mazenmc.prisonrankup.commands", Command.class, this)) {
+                CommandManager.getInstance().registerCommand(cls.newInstance());
+            }
+        }catch(Exception ex) {
+            getLogger().log(Level.SEVERE, "Unable to register default commands, disabling plugin...");
+            getServer().getPluginManager().disablePlugin(this);
+
+            return;
+        }
+
         // Register subcommands
         try{
-            for(Class<?> cls : ClassFinder.find("io.mazenmc.prisonrankup.subcommands", Object.class, this)) {
-                cls.newInstance();
+            for(Class<? extends SubCommand> cls : ClassFinder.find("io.mazenmc.prisonrankup.subcommands", SubCommand.class, this)) {
+                SubCommand subCommand = cls.getConstructor(String.class).newInstance("rankup");
+
+                CommandManager.getInstance().registerSubCommand(subCommand.getCommandName(), subCommand);
             }
         }catch(Exception ex) {
             getLogger().log(Level.SEVERE, "Unable to register default subcommands, disabling plugin...");

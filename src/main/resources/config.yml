@@ -23,7 +23,7 @@ Last Rank: 'C'
 Highest Rank MSG: '&6 You are already the highest rank!'
 # This next one is if you want to use a timed requirement for your rankup system, set it to true if yes. Default is false;
 Timed Requirement: false
-# Now we're if you set it to true you will have to set a certain time (in seconds) that you want to be done for the rank requirement
+# Now we're if you set it to true you will have to set a certain time that you want to be done for the rank requirement
 Time Interval: 0.0
 # Here you will write what the time is based on, seconds, minutes or hours. Spelling does matter!
 Time type: Seconds

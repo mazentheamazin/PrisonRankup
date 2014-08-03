@@ -1,14 +1,19 @@
 package io.mazenmc.prisonrankup.objects;
 
-import io.mazenmc.prisonrankup.managers.CommandManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public abstract class SubCommand {
 
-    private SubCommand(String cmdName) {
-        CommandManager.getInstance().registerSubCommand(cmdName, this);
+    private String cmdName;
+
+    protected SubCommand(String cmdName) {
+        this.cmdName = cmdName;
+    }
+
+    public String getCommandName() {
+        return cmdName;
     }
 
     public abstract void onExecute(CommandSender sender, Command cmd, String label, String[] args);

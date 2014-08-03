@@ -2,6 +2,7 @@ package io.mazenmc.prisonrankup.objects;
 
 import io.mazenmc.prisonrankup.PrisonRankupPlugin;
 import io.mazenmc.prisonrankup.enums.Untitled;
+import io.mazenmc.prisonrankup.managers.RankManager;
 import io.mazenmc.prisonrankup.managers.UUIDManager;
 import io.mazenmc.prisonrankup.managers.VaultManager;
 import io.mazenmc.prisonrankup.utils.UUIDUtil;
@@ -12,6 +13,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
+import static io.mazenmc.prisonrankup.enums.PrisonRankupConfig.CONFIG;
 import static io.mazenmc.prisonrankup.enums.PrisonRankupConfig.DATA;
 import static io.mazenmc.prisonrankup.managers.RankManager.getInstance;
 
@@ -53,7 +55,16 @@ public class PRPlayer {
             profile = DATA.getConfigurationSection("users." + id);
 
             // Set the data
-            profile.set("rank", getInstance().getRank(0).getName());
+            String rank = "";
+
+            if(CONFIG.getBoolean("Transfer ranks to profile")) {
+                for(String s : VaultManager.getInstance().getPermission().getPlayerGroups(null, offlinePlayer)) {
+                    if(RankManager.getInstance().isRank(s))
+                        rank = s;
+                }
+            }
+
+            profile.set("rank", (rank.equals("")) ? getInstance().getRank(0).getName() : rank);
             profile.set("name", name);
         }else{
             profile = DATA.getConfigurationSection("users." + id);

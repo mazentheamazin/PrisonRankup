@@ -68,6 +68,15 @@ public class RankManager extends Manager{
         return ranks.indexOf(rank);
     }
 
+    public boolean isRank(String rank) {
+        for(Rank rnk : ranks) {
+            if(rnk.getName().equals(rank))
+                return true;
+        }
+
+        return false;
+    }
+
     @Override
     public void cleanup() {
         instance = null;

@@ -53,7 +53,7 @@ public class Rankup extends Command {
                     String str;
                     double timeInterval = CONFIG.getDouble("Time Interval");
 
-                    switch(CONFIG.getString("Time type").toLowerCase().toCharArray()[0]) {
+                    switch(CONFIG.getString("Time type").charAt(0)) {
                         case 's':
                             str = timeInterval + " seconds!";
                             break;
