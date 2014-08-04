@@ -1,5 +1,6 @@
 package io.mazenmc.prisonrankup.managers;
 
+import io.mazenmc.prisonrankup.PrisonRankupPlugin;
 import io.mazenmc.prisonrankup.enums.PrisonRankupConfig;
 import io.mazenmc.prisonrankup.objects.PRPlayer;
 import io.mazenmc.prisonrankup.objects.Rank;
@@ -25,6 +26,10 @@ public class DataManager extends Manager{
      * Updates all information about players from data.yml. All changes will be lost.
      */
     public void update() {
+        if(dataConfig.getConfigurationSection("users") == null) {
+            dataConfig.createSection("users");
+        }
+
         for(String s : dataConfig.getConfigurationSection("users").getKeys(false)) {
             addPlayer(UUIDManager.getInstance().getName(UUIDUtil.stringToID(s)));
         }
@@ -64,8 +69,9 @@ public class DataManager extends Manager{
      */
     public PRPlayer getPlayer(String name) {
         for(PRPlayer player : players) {
-            if(player.getName().startsWith(name))
+            if(player.getName().startsWith(name)) {
                 return player;
+            }
         }
 
         return null;
@@ -91,6 +97,17 @@ public class DataManager extends Manager{
      */
     public List<PRPlayer> getPlayers() {
         return players;
+    }
+
+    public void updatePlayer(PRPlayer ne) {
+        for(PRPlayer player : new ArrayList<>(players)) {
+            if(player.getName().equals(ne.getName()))
+                players.remove(player);
+        }
+
+        players.add(ne);
+
+        TimeManager.getInstance().update(ne);
     }
 
     @Override

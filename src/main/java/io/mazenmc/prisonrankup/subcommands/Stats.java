@@ -19,7 +19,7 @@ public class Stats extends SubCommand {
     private static Stats instance = new Stats();
 
     private Stats() {
-        super("stats");
+        super("rankup");
     }
 
     @Override

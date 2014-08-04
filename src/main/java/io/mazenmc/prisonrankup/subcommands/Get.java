@@ -16,7 +16,7 @@ public class Get extends SubCommand {
     private static Get instance = new Get();
 
     public Get() {
-        super("get");
+        super("rankup");
     }
 
     @Override

@@ -24,7 +24,7 @@ public class RankManager extends Manager{
         ranks.clear();
 
         for(String s : PrisonRankupConfig.CONFIG.getStringList("groups")) {
-            ranks.add(new Rank(s.split(" ")[0]));
+            ranks.add(new Rank(s.split(":")[0]));
         }
     }
 

@@ -18,19 +18,10 @@ public class Rank {
      * @param name
      */
     public Rank(String name) {
-        Rank tmpRank;
-
-        if((tmpRank = RankManager.getInstance().getRank(name)) != null) {
-            this.name = tmpRank.getName();
-            this.price = tmpRank.getPrice();
-
-            return;
-        }
-
         this.name = name;
 
         for(String s : PrisonRankupConfig.CONFIG.getStringList("groups")) {
-            if(s.startsWith(name) && s.contains(":") && s.split(":").length == 1)
+            if(s.startsWith(name) && s.contains(":") && s.split(":").length >= 2)
                 this.price = new Price(s.split(":")[1]);
         }
 

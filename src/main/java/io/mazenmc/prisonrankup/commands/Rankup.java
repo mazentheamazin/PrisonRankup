@@ -1,5 +1,6 @@
 package io.mazenmc.prisonrankup.commands;
 
+import io.mazenmc.prisonrankup.PrisonRankupPlugin;
 import io.mazenmc.prisonrankup.enums.Message;
 import io.mazenmc.prisonrankup.events.PlayerRankupEvent;
 import io.mazenmc.prisonrankup.managers.DataManager;
@@ -10,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import static io.mazenmc.prisonrankup.enums.PrisonRankupConfig.CONFIG;
 
@@ -31,6 +33,11 @@ public class Rankup extends Command {
         PRPlayer pr = DataManager.getInstance().getPlayer(player.getName());
 
         if(pr.canRankup()) {
+
+            pr.rankup();
+
+            pr = DataManager.getInstance().getPlayer(player.getName());
+
             PlayerRankupEvent rankupEvent = new PlayerRankupEvent(pr);
             net.craftservers.prisonrankup.Utils.Events.PlayerRankupEvent oldRankupEvent =
                     new net.craftservers.prisonrankup.Utils.Events.PlayerRankupEvent(new net.craftservers.prisonrankup.Models.PRPlayer(pr.getName()), new Rank(pr.getCurrentRank().getName()));
@@ -38,9 +45,8 @@ public class Rankup extends Command {
             Bukkit.getPluginManager().callEvent(rankupEvent);
             Bukkit.getPluginManager().callEvent(oldRankupEvent);
 
-            pr.rankup();
-
-            Bukkit.broadcastMessage((Message.PREFIX.toString().equals("")) ? Message.RANKUP.toString() : Message.PREFIX.toString() + Message.RANKUP.toString());
+            Bukkit.broadcastMessage(((Message.PREFIX.toString().equals("")) ? Message.RANKUP.toString() : Message.PREFIX.toString() + " " + Message.RANKUP)
+                    .replaceAll("%player%", pr.getName()).replaceAll("%rank%", pr.getCurrentRank().getName()));
         }else{
 
             switch(pr.getReason()) {
@@ -53,7 +59,7 @@ public class Rankup extends Command {
                     String str;
                     double timeInterval = CONFIG.getDouble("Time Interval");
 
-                    switch(CONFIG.getString("Time type").charAt(0)) {
+                    switch(CONFIG.getString("Time type").toLowerCase().charAt(0)) {
                         case 's':
                             str = timeInterval + " seconds!";
                             break;
@@ -89,29 +95,27 @@ public class Rankup extends Command {
                             "are highly abstract, while fields such as computer graphics emphasize real-world visual applications. Still other fields focus on the challenges in implementing computation." +
                             " For example, programming language theory considers various approaches to the description of computation, whilst the study of computer programming itself investigates various aspects" +
                             " of the use of programming language and complex systems. Human-computer interaction considers the challenges in making computers and computations useful, usable, and universally accessible" +
-                            " to humans.").split(".");
+                            " to humans.").split("\\.");
 
-                    // Because I'm too lazy to use BukkitRunnable, anyways its not like this is meant to be executed
 
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            for(String s : computerScience) {
-                                // THIS IS SAFE
-                                player.sendMessage(ChatColor.AQUA + s);
+                    for(int i = 0; i < computerScience.length; i++) {
+                        final String s = computerScience[i];
 
-                                try{
-                                    Thread.sleep(2000);
-                                }catch(InterruptedException ignored) {}
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                player.sendMessage(ChatColor.AQUA + s + ".");
                             }
-
-                            Thread.currentThread().interrupt();
-                        }
-                    }, "2mlg5meplzcanhasmoneyno?illrekum8inv1v1bcfaze").start();
+                        }.runTaskLater(PrisonRankupPlugin.getInstance(), 200L * i);
+                    }
 
                     break;
             }
         }
+    }
+
+    public static Rankup getInstance() {
+        return instance;
     }
 
 }

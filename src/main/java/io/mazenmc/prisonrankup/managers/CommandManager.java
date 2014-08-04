@@ -1,5 +1,6 @@
 package io.mazenmc.prisonrankup.managers;
 
+import io.mazenmc.prisonrankup.PrisonRankupPlugin;
 import io.mazenmc.prisonrankup.enums.Message;
 import io.mazenmc.prisonrankup.objects.Command;
 import io.mazenmc.prisonrankup.objects.SubCommand;
@@ -19,7 +20,7 @@ public class CommandManager extends Manager implements CommandExecutor {
     private Map<Command, List<SubCommand>> commandData = new HashMap<>();
 
     private CommandManager() {
-        //
+
     }
 
     @Override
@@ -51,6 +52,8 @@ public class CommandManager extends Manager implements CommandExecutor {
                             }else{
                                 sc.onExecute(cs, cmd, label, newArgs);
                             }
+
+                            return true;
                         }
                     }
 
@@ -94,11 +97,18 @@ public class CommandManager extends Manager implements CommandExecutor {
             throw new IllegalArgumentException("Provided command does not exist!");
         }
 
-        commandData.get(cmd).add(subCommand);
+        List<SubCommand> ls = commandData.get(cmd);
+
+        ls.add(subCommand);
+
+        commandData.remove(cmd);
+        commandData.put(cmd, ls);
     }
 
     public void registerCommand(Command cmd) {
         commandData.put(cmd, new ArrayList<SubCommand>());
+
+        PrisonRankupPlugin.getInstance().getCommand(cmd.getName()).setExecutor(this);
     }
 
     @Override

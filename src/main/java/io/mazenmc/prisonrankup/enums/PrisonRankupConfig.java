@@ -5,6 +5,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
@@ -18,15 +19,15 @@ import static io.mazenmc.prisonrankup.PrisonRankupPlugin.getInstance;
 import static io.mazenmc.prisonrankup.PrisonRankupPlugin.log;
 
 public enum PrisonRankupConfig {
-    
-    CONFIG(getInstance().getConfig(), new File(getInstance().getDataFolder(), "config.yml")),
-    DATA(getInstance().getConfig(), new File(getInstance().getDataFolder(), "data.yml"));
-    
+
+    CONFIG(new File(getInstance().getDataFolder(), "config.yml")),
+    DATA(new File(getInstance().getDataFolder(), "data.yml"));
+
     private FileConfiguration config;
     private File file;
-    
-    private PrisonRankupConfig(FileConfiguration config, File file) {
-        this.config = config;
+
+    private PrisonRankupConfig(File file) {
+        this.config = YamlConfiguration.loadConfiguration(file);
         this.file = file;
     }
 
@@ -287,12 +288,17 @@ public enum PrisonRankupConfig {
         try{
             config.load(file);
         }catch(Exception ex) {
-            log("Unable to reload " + file.getName() + " due to " + ex.getMessage() + "... priting stacktrace");
+            log("Unable to reload " + file.getName() + " due to " + ex.getMessage() + "... printing stacktrace");
             ex.printStackTrace();
         }
     }
 
     public void saveDefaultConfig() {
-        getInstance().saveResource(file.getName(), false);
+        if(!file.exists()) {
+            getInstance().saveResource(file.getName(), false);
+        }
+
+
+        reload();
     }
 }

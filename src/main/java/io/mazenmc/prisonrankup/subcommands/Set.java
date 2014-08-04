@@ -14,8 +14,10 @@ import org.bukkit.entity.Player;
 
 public class Set extends SubCommand {
 
+    private static Set instance = new Set();
+
     public Set() {
-        super("set");
+        super("rankup");
     }
 
     @Override

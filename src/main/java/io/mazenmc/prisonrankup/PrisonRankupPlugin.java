@@ -11,6 +11,7 @@ import io.mazenmc.prisonrankup.utils.ClassFinder;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.lang.reflect.Field;
 import java.util.logging.Level;
 
 public class PrisonRankupPlugin extends JavaPlugin{
@@ -26,6 +27,17 @@ public class PrisonRankupPlugin extends JavaPlugin{
         PrisonRankupConfig.DATA.saveDefaultConfig();
         PrisonRankupConfig.CONFIG.saveDefaultConfig();
 
+        // Register managers
+        try{
+            //initiate classes
+            ClassFinder.find("io.mazenmc.prisonrankup.managers", Manager.class, this);
+        }catch(Exception ex) {
+            getLogger().log(Level.SEVERE, "Unable to register managers, disabling plugin...", ex);
+            getServer().getPluginManager().disablePlugin(this);
+
+            return;
+        }
+
         // Register listeners
         try{
             for(Class<?> cls : ClassFinder.find("io.mazenmc.prisonrankup.listeners", Listener.class, this)) {
@@ -33,7 +45,7 @@ public class PrisonRankupPlugin extends JavaPlugin{
             }
 
         }catch(Exception ex) {
-            getLogger().log(Level.SEVERE, "Unable to register listeners, disabling plugin...");
+            getLogger().log(Level.SEVERE, "Unable to register listeners, disabling plugin...", ex);
             getServer().getPluginManager().disablePlugin(this);
 
             return;
@@ -42,10 +54,12 @@ public class PrisonRankupPlugin extends JavaPlugin{
         // Register commands
         try{
             for(Class<? extends Command> cls : ClassFinder.find("io.mazenmc.prisonrankup.commands", Command.class, this)) {
-                CommandManager.getInstance().registerCommand(cls.newInstance());
+                Command cmd = (Command) cls.getMethod("getInstance").invoke(null);
+
+                CommandManager.getInstance().registerCommand(cmd);
             }
         }catch(Exception ex) {
-            getLogger().log(Level.SEVERE, "Unable to register default commands, disabling plugin...");
+            getLogger().log(Level.SEVERE, "Unable to register default commands, disabling plugin...", ex);
             getServer().getPluginManager().disablePlugin(this);
 
             return;
@@ -54,12 +68,18 @@ public class PrisonRankupPlugin extends JavaPlugin{
         // Register subcommands
         try{
             for(Class<? extends SubCommand> cls : ClassFinder.find("io.mazenmc.prisonrankup.subcommands", SubCommand.class, this)) {
-                SubCommand subCommand = cls.getConstructor(String.class).newInstance("rankup");
+                getLogger().info(cls.getSimpleName());
+
+                Field instance = cls.getDeclaredField("instance");
+
+                instance.setAccessible(true);
+
+                SubCommand subCommand = (SubCommand) instance.get(null);
 
                 CommandManager.getInstance().registerSubCommand(subCommand.getCommandName(), subCommand);
             }
         }catch(Exception ex) {
-            getLogger().log(Level.SEVERE, "Unable to register default subcommands, disabling plugin...");
+            getLogger().log(Level.SEVERE, "Unable to register default subcommands, disabling plugin...", ex);
             getServer().getPluginManager().disablePlugin(this);
 
             return;

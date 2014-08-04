@@ -12,6 +12,7 @@ public class RankupListener implements Listener{
     @EventHandler
     public void onRankup(PlayerRankupEvent event) {
         if(PrisonRankupConfig.CONFIG.getBoolean("Interval on all ranks")) {
+
             long time = 0L;
             int i = PrisonRankupConfig.CONFIG.getInt("Time Interval");
 
@@ -32,6 +33,9 @@ public class RankupListener implements Listener{
                     PrisonRankupPlugin.log("Time type has been defined incorrectly!");
                     return;
             }
+
+            PrisonRankupPlugin.log("" + time);
+            PrisonRankupPlugin.log("" + i);
 
             TimeManager.getInstance().addPlayer(event.getPlayer(), time);
         }

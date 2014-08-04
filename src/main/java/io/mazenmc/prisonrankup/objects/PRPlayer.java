@@ -2,9 +2,7 @@ package io.mazenmc.prisonrankup.objects;
 
 import io.mazenmc.prisonrankup.PrisonRankupPlugin;
 import io.mazenmc.prisonrankup.enums.Untitled;
-import io.mazenmc.prisonrankup.managers.RankManager;
-import io.mazenmc.prisonrankup.managers.UUIDManager;
-import io.mazenmc.prisonrankup.managers.VaultManager;
+import io.mazenmc.prisonrankup.managers.*;
 import io.mazenmc.prisonrankup.utils.UUIDUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -133,14 +131,14 @@ public class PRPlayer {
      * Makes the player rankup
      */
     public void rankup() {
-        setRank(nextRank);
-
         VaultManager vaultManager = VaultManager.getInstance();
 
         vaultManager.getEconomy().withdrawPlayer(offlinePlayer, nextRank.getPrice().getValue());
 
         vaultManager.getPermission().playerRemoveGroup(null, offlinePlayer, currentRank.getName());
         vaultManager.getPermission().playerAddGroup(null, offlinePlayer, nextRank.getName());
+
+        setRank(nextRank);
     }
 
     /**
@@ -148,7 +146,8 @@ public class PRPlayer {
      * @return If said player can rankup
      */
     public boolean canRankup() {
-        return (VaultManager.getInstance().getEconomy().getBalance(offlinePlayer) >= nextRank.getPrice().getValue()) || (currentRank == nextRank);
+        return (VaultManager.getInstance().getEconomy().getBalance(offlinePlayer) >= nextRank.getPrice().getValue()) && (currentRank != nextRank) &&
+                !(TimeManager.getInstance().isOnTimer(this));
     }
 
     /**
@@ -156,13 +155,15 @@ public class PRPlayer {
      * @return Why a player can't rankup
      */
     public Untitled getReason() {
-       if(VaultManager.getInstance().getEconomy().getBalance(offlinePlayer) >= nextRank.getPrice().getValue()) {
-           return Untitled.NOHASMONEY;
-       }else if(currentRank == nextRank) {
-           return Untitled.HASMUCHRANK;
-       }else{
-           return Untitled.KTHXBAI;
-       }
+         if(TimeManager.getInstance().isOnTimer(this)) {
+             return Untitled.TIMENEEDWAIT;
+         }else if(VaultManager.getInstance().getEconomy().getBalance(offlinePlayer) < nextRank.getPrice().getValue()) {
+             return Untitled.NOHASMONEY;
+         }else if(currentRank == nextRank) {
+             return Untitled.HASMUCHRANK;
+         }else{
+             return Untitled.KTHXBAI;
+         }
     }
 
     /**
@@ -179,17 +180,19 @@ public class PRPlayer {
      */
     public void setRank(Rank rank) {
         // Get the current rank and index of said rank
-        currentRank = getInstance().getRank(profile.getString("rank"));
+        currentRank = rank;
         int crIndex = getInstance().indexOf(currentRank);
 
-        // This will set his next rank to his current one if he has the last rank
+        // This will set his next rank to his current one if he has the last rank otherwise work as usual.
         if(crIndex == (getInstance().getRanks().size()-1)) {
             nextRank = currentRank;
-
-            return;
+        }else{
+            nextRank = getInstance().getRank(crIndex + 1);
         }
 
-        nextRank = getInstance().getRank(crIndex + 1);
+        if(DataManager.getInstance() != null) {
+            DataManager.getInstance().updatePlayer(this);
+        }
     }
 
     /**

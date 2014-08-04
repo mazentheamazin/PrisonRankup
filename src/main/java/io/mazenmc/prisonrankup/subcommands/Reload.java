@@ -14,7 +14,7 @@ public class Reload extends SubCommand {
     private static Reload instance = new Reload();
 
     public Reload() {
-        super("reload");
+        super("rankup");
     }
 
     @Override

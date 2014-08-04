@@ -16,6 +16,7 @@ public class TimeManager extends Manager {
     private TimeManager() {}
 
     public void addPlayer(PRPlayer player, long time) {
+
         onTime.add(player);
         final String name = player.getName();
 
@@ -34,6 +35,21 @@ public class TimeManager extends Manager {
 
     public boolean isOnTimer(PRPlayer player) {
         return onTime.contains(player);
+    }
+
+    void update(PRPlayer ne) {
+        boolean removed = false;
+
+        for(PRPlayer prPlayer : new ArrayList<>(onTime)) {
+            if(prPlayer.getName().equals(ne.getName())) {
+                onTime.remove(prPlayer);
+                removed = true;
+            }
+        }
+
+        if(removed) {
+            onTime.add(ne);
+        }
     }
 
     @Override

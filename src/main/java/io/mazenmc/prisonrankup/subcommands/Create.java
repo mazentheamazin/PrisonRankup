@@ -18,7 +18,7 @@ public class Create extends SubCommand {
     private static Create instance = new Create();
 
     private Create() {
-        super("create");
+        super("rankup");
     }
 
     @Override

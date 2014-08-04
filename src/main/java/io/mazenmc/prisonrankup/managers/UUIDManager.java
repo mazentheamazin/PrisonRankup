@@ -75,15 +75,11 @@ public class UUIDManager extends Manager {
 
                 //Read the contents of the said page and parse them into a JSONArray
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                JSONArray array = (JSONArray) jsonParser.parse(reader);
+                JSONObject object = (JSONObject) jsonParser.parse(reader);
+                String name;
 
-                for(Object object : array) {
-                    JSONObject jsonObject = (JSONObject) object;
-                    String name;
-
-                    if((name = (String) (jsonObject.get("name"))) != null) {
-                        uuidData.put(uuid, name);
-                    }
+                if((name = (String) (object.get("name"))) != null) {
+                    uuidData.put(uuid, name);
                 }
             }catch(Exception ex) {
                 PrisonRankupPlugin.getInstance().getLogger().log(Level.SEVERE, StringUtil.buildString("Unable to retrieve a player name by the UUID of ", uuid.toString(),
