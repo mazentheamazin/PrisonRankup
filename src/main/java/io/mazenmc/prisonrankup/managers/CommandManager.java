@@ -38,9 +38,10 @@ public class CommandManager extends Manager implements CommandExecutor {
                     return true;
                 }
 
-                if(args.length > 1) {
+                if(args.length >= 1) {
                     // First try and find a sub command that matches the command
                     for(SubCommand sc : subCommands) {
+
                         if(sc.getClass().getSimpleName().equalsIgnoreCase(args[0])) {
                             String[] newArgs = new String[(args.length - 1)];
 

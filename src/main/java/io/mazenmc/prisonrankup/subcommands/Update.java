@@ -22,8 +22,9 @@ public class Update extends SubCommand {
 
     @Override
     public void onExecute(CommandSender sender, Command cmd, String label, String[] args) {
-        if(UpdaterManager.getInstance().isUpdateAvailable()) {
+        if(!(UpdaterManager.getInstance().isUpdateAvailable())) {
             sender.sendMessage(ChatColor.DARK_RED + "There is no update available!");
+            return;
         }
 
         UpdaterManager.getInstance().update();
