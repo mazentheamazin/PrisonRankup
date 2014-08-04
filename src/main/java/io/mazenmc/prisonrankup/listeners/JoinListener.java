@@ -4,6 +4,8 @@ import io.mazenmc.prisonrankup.enums.PrisonRankupConfig;
 import io.mazenmc.prisonrankup.managers.DataManager;
 import io.mazenmc.prisonrankup.managers.TimeManager;
 import io.mazenmc.prisonrankup.managers.UUIDManager;
+import io.mazenmc.prisonrankup.managers.UpdaterManager;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -40,6 +42,13 @@ public class JoinListener implements Listener {
             }
 
             TimeManager.getInstance().addPlayer(DataManager.getInstance().getPlayer(event.getPlayer().getName()), seconds);
+        }
+
+        if(UpdaterManager.getInstance().isUpdateAvailable() && event.getPlayer().hasPermission("prisonrankup.update")) {
+            UpdaterManager um = UpdaterManager.getInstance();
+
+            event.getPlayer().sendMessage(ChatColor.GOLD + "An update is available: " + um.getName() + ", a " +
+                    um.getType() + " for " + um.getVersion() + " available at " + um.getVersion());
         }
     }
 }

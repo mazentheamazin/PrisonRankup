@@ -11,6 +11,7 @@ import io.mazenmc.prisonrankup.utils.ClassFinder;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.logging.Level;
 
@@ -117,5 +118,9 @@ public class PrisonRankupPlugin extends JavaPlugin{
 
     public static void log(String message) {
         getInstance().getLogger().info(message);
+    }
+
+    public File getFile0() {
+        return getFile();
     }
 }
