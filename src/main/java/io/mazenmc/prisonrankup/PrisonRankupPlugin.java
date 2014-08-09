@@ -69,8 +69,6 @@ public class PrisonRankupPlugin extends JavaPlugin{
         // Register subcommands
         try{
             for(Class<? extends SubCommand> cls : ClassFinder.find("io.mazenmc.prisonrankup.subcommands", SubCommand.class, this)) {
-                getLogger().info(cls.getSimpleName());
-
                 Field instance = cls.getDeclaredField("instance");
 
                 instance.setAccessible(true);

@@ -8,6 +8,6 @@ Compiling
 
 - Download & Install [Maven 3](http://maven.apache.org/download.html)
 - Clone the repository: `git clone https://github.com/mazentheamazin/PrisonRankup`
-- Compile and create the plugin package using Maven: `mvn`
+- Compile and create the plugin package using Maven: `mvn clean install`
 
 Maven will download all required dependencies and build a ready-for-use plugin package!

@@ -1,19 +1,55 @@
 package io.mazenmc.prisonrankup.listeners;
 
+import io.mazenmc.prisonrankup.PrisonRankupPlugin;
 import io.mazenmc.prisonrankup.enums.PrisonRankupConfig;
 import io.mazenmc.prisonrankup.managers.DataManager;
 import io.mazenmc.prisonrankup.managers.TimeManager;
 import io.mazenmc.prisonrankup.managers.UUIDManager;
 import io.mazenmc.prisonrankup.managers.UpdaterManager;
+import io.mazenmc.prisonrankup.utils.UUIDUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.UUID;
 
 public class JoinListener implements Listener {
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
+    public void onJoin(final PlayerJoinEvent event) {
+        // Before we do anything I'm going to do something hacky ;)
+        if(!(Bukkit.getOnlineMode())) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    try{
+                        // Get the CraftPlayer class
+                        String mcVersion = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+                        Class<?> craftPlayer = Class.forName("org.bukkit.craftbukkit." + mcVersion + ".entity.CraftPlayer");
+
+                        // Get the NMS EntityPlayer class
+                        Method handle = craftPlayer.getMethod("getHandle");
+                        Object nmsEntity = handle.invoke(event.getPlayer());
+                        Class<?> entityPlayer = nmsEntity.getClass();
+
+                        // If we've gotten this far, we can now get his UUID
+                        UUID id = UUIDUtil.stringToID(UUIDManager.getInstance().getRepository().findProfilesByNames(event.getPlayer().getName())[0].getId());
+
+                        // Now we're going to set his uuid
+                        Field field = entityPlayer.getField("uniqueID");
+                        field.set(nmsEntity, id);
+                    }catch(Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }.runTaskAsynchronously(PrisonRankupPlugin.getInstance());
+        }
+
         if(!(UUIDManager.getInstance().contains(event.getPlayer().getName())) ||
                 !(UUIDManager.getInstance().getName(event.getPlayer().getUniqueId()).equals(event.getPlayer().getName()))) {
             UUIDManager.getInstance().updateName(event.getPlayer().getUniqueId(), event.getPlayer().getName());

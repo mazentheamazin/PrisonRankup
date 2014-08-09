@@ -1,5 +1,6 @@
 package io.mazenmc.prisonrankup.managers;
 
+import com.mojang.api.profiles.HttpProfileRepository;
 import io.mazenmc.prisonrankup.PrisonRankupPlugin;
 import io.mazenmc.prisonrankup.enums.PrisonRankupConfig;
 import io.mazenmc.prisonrankup.utils.StringUtil;
@@ -7,6 +8,7 @@ import io.mazenmc.prisonrankup.utils.UUIDUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -32,8 +34,20 @@ public class UUIDManager extends Manager {
     private JSONParser jsonParser = new JSONParser();
     private PrisonRankupConfig dataConfig = PrisonRankupConfig.DATA;
 
+    /* Fields used for conversion Name -> UUID on Offline Mode */
+    private final String AGENT = "minecraft";
+    private HttpProfileRepository REPOSITORY;
+
     private UUIDManager() {
         update();
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                REPOSITORY = new HttpProfileRepository(AGENT);
+                PrisonRankupPlugin.log("HttpProfileRepository initiated!");
+            }
+        }.runTaskAsynchronously(PrisonRankupPlugin.getInstance());
     }
 
     /**
@@ -86,6 +100,10 @@ public class UUIDManager extends Manager {
                         " due to ", ex.getMessage()), ex);
             }
         }
+    }
+
+    public HttpProfileRepository getRepository() {
+        return REPOSITORY;
     }
 
 
