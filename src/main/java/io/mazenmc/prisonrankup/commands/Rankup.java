@@ -6,12 +6,15 @@ import io.mazenmc.prisonrankup.events.PlayerRankupEvent;
 import io.mazenmc.prisonrankup.managers.DataManager;
 import io.mazenmc.prisonrankup.objects.Command;
 import io.mazenmc.prisonrankup.objects.PRPlayer;
+import io.mazenmc.prisonrankup.utils.LangUtil;
 import net.craftservers.prisonrankup.Models.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.Arrays;
 
 import static io.mazenmc.prisonrankup.enums.PrisonRankupConfig.CONFIG;
 
@@ -25,11 +28,26 @@ public class Rankup extends Command {
 
     @Override
     public void onExecute(CommandSender sender, org.bukkit.command.Command cmd, String label, String[] args) {
-        sender.sendMessage(ChatColor.DARK_RED + "Only players can run this command!");
+        String[] strs = LangUtil.toColor("&3----------" + Message.PREFIX + "&r&3----------",
+                "&6/rankup - &3Rankup to your wildest dreams!",
+                "&6/rankup create [rank] [price] - &3Create ranks in-game!",
+                "&6/rankup get [player] - &3Get player data!",
+                "&6/rankup reload - &3Reload configuration files!",
+                "&6/rankup set [player] [rank] - &3Set a player's rank!",
+                "&6/rankup stats [rank] - &3Get a rank's statistics!",
+                "&6/rankup update - &3Update plugin to the latest version!",
+                "&3----------" + Message.PREFIX + "&r&3----------");
+
+        sender.sendMessage(strs);
     }
 
     @Override
     public void onExecute(final Player player, org.bukkit.command.Command cmd, String label, String[] args) {
+        if(args.length > 0) {
+            onExecute((CommandSender) player, cmd, label, args);
+            return;
+        }
+
         PRPlayer pr = DataManager.getInstance().getPlayer(player.getName());
 
         if(pr.canRankup()) {
