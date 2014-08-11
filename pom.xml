@@ -8,6 +8,17 @@
     <artifactId>PrisonRankup</artifactId>
     <version>3.0</version>
 
+    <name>PrisonRankup</name>
+    <url>http://dev.bukkit.org/bukkit-plugins/PrisonRankup/</url>
+
+    <distributionManagement>
+        <repository>
+            <id>internal.repo</id>
+            <name>Temporary Staging Repository</name>
+            <url>file://${project.build.directory}/mvn-repo</url>
+        </repository>
+    </distributionManagement>
+
     <build>
 
         <resources>
