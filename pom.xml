@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>PrisonRankup</groupId>
+    <groupId>io.mazenmc</groupId>
     <artifactId>PrisonRankup</artifactId>
     <version>3.0</version>
 
@@ -65,7 +65,31 @@
                 </executions>
             </plugin>
 
-
+            <plugin>
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>0.8</version>
+                <configuration>
+                    <message>Maven artifacts for ${project.version}</message>
+                    <noJekyll>true</noJekyll>
+                    <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory>
+                    <branch>refs/heads/mvn-repo</branch>
+                    <merge>true</merge>
+                    <includes>
+                        <include>**/*</include>
+                    </includes>
+                    <repositoryName>PrisonRankup</repositoryName>
+                    <repositoryOwner>mazentheamazin</repositoryOwner>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <phase>deploy</phase>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -106,4 +130,10 @@
             <version>1.0</version>
         </dependency>
     </dependencies>
+
+    <scm>
+        <connection>scm:git:git@github.com:mazentheamazin/PrisonRankup.git</connection>
+        <url>scm:git:git@github.com:mazentheamazin/PrisonRankup.git</url>
+        <developerConnection>scm:git:git@github.com:mazentheamazin/PrisonRankup.git</developerConnection>
+    </scm>
 </project>
