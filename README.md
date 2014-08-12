@@ -12,6 +12,11 @@ Compiling
 
 Maven will download all required dependencies and build a ready-for-use plugin package!
 
+JavaDocs
+========
+
+You can checkout the JavaDocs [here](http://docs.mazenmc.io/prisonrankup/)
+
 Adding PrisonRankup as a Maven Dependency
 =========================================
 
