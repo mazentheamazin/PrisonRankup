@@ -27,6 +27,9 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import static io.mazenmc.prisonrankup.enums.PrisonRankupConfig.CONFIG;
@@ -44,6 +47,9 @@ public class PRPlayer {
     private String name;
     private String id;
     private OfflinePlayer offlinePlayer;
+
+    /* API data */
+    private Map<String, Object> apiData = new HashMap<>();
 
     /**
      * Constructor for a new PrisonRankup player
@@ -87,6 +93,21 @@ public class PRPlayer {
         }
 
         setRank(getInstance().getRank(profile.getString("rank")));
+
+        // v3.1 start
+
+        /* Time to load API data */
+        for(String s : getSection().getKeys(false)) {
+            // Making sure we don't load PrisonRankup's data
+            if(s.equals("rank") || s.equals("name")) {
+                continue;
+            }
+
+            // Add the data to the hashmap
+            apiData.put(s, getSection().get(s));
+        }
+
+        // v3.1 end
     }
 
     /**
@@ -136,6 +157,55 @@ public class PRPlayer {
     public UUID getID() {
         return UUIDUtil.stringToID(id);
     }
+
+    /*                                       v3.1 Start                                                               */
+
+    /**
+     * Gets value of API data from key
+     * @param key key used for said API data
+     * @return Found value
+     */
+    public Object get(String key) {
+        return apiData.get(key);
+    }
+
+    /**
+     * Gets value of API data from key
+     * @param key key used for said API data
+     * @return Found value
+     */
+    public String getString(String key) {
+        return (String) get(key);
+    }
+
+    /**
+     * Gets value of API data from key
+     * @param key key used for said API data
+     * @return Found value
+     */
+    public int getInt(String key) {
+        return (Integer) get(key);
+    }
+
+    /**
+     * Gets value of API data from key
+     * @param key key used for said API data
+     * @return Found value
+     */
+    public double getDouble(String key) {
+        return (Double) get(key);
+    }
+
+    /**
+     * Gets value of API data from key
+     * @param key key used for said API data
+     * @return Found value
+     */
+    public byte getByte(String key) {
+        return (Byte) get(key);
+    }
+
+    /*                                           v3.1 End                                                             */
 
     /**
      * Gets the Offline player object of said player
@@ -212,6 +282,59 @@ public class PRPlayer {
             DataManager.getInstance().updatePlayer(this);
         }
     }
+
+    /*                                       v3.1 Start                                                               */
+
+    /**
+     * Add API data
+     * @param key Key you wish to use for said API data
+     * @param value Value for said API data
+     */
+    public void put(String key, Object value) {
+        // Make sure somebody doesn't add data with a key that already exists
+        if(apiData.containsKey(key))
+            throw new IllegalArgumentException(key + " is an already used API key");
+
+        apiData.put(key, value);
+    }
+
+    /**
+     * Remove API data
+     * @param key Key you wish to use to remove said API data
+     */
+    public void remove(String key) {
+        // Make sure somebody doesn't remove data which doesn't exist
+        if(!(apiData.containsKey(key)))
+            throw new IllegalArgumentException("API data with the key " + key + " doesn't exist!");
+
+        // Replace the data to null, bukkit will remove the data by itself
+        replace(key, null);
+    }
+
+    /**
+     * Replace API data
+     * @param key Key you wish to use for said API data
+     * @param newValue New value to set the data to
+     */
+    public void replace(String key, Object newValue) {
+        // Make sure the data exists
+        if(!(apiData.containsKey(key)))
+            throw new IllegalArgumentException("API data with key " + key + " doesn't exist!");
+
+        // Replace the data
+        apiData.remove(key);
+        apiData.put(key, newValue);
+    }
+
+    /**
+     * Gets API data
+     * @return API data
+     */
+    public Map<String, Object> getData() {
+        return Collections.unmodifiableMap(apiData);
+    }
+
+    /*                                           v3.1 End                                                             */
 
     /**
      * Gets the balance of the player from Vault
