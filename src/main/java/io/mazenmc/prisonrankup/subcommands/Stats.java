@@ -78,6 +78,7 @@ public class Stats extends SubCommand {
         stringBuilder.append(ChatColor.GOLD);
 
         for(int i = 0; i < players.size(); i++) {
+            //TODO: Make clickable player profiles
             stringBuilder.append(players.get(i).getName());
             stringBuilder.append(", ");
 

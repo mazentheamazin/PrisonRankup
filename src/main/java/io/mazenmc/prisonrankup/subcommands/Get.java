@@ -70,8 +70,18 @@ public class Get extends SubCommand {
 
         sender.sendMessage(ChatColor.AQUA + player.getName() + "'s Profile:");
         sender.sendMessage(ChatColor.AQUA + "Balance: " + player.getBalance());
-        sender.sendMessage(ChatColor.AQUA + "Current rank: " + player.getCurrentRank().getName());
-        sender.sendMessage(ChatColor.AQUA + "Next rank: " + player.getNextRank().getName());
+
+        // v3.1 start
+
+        if(sender instanceof Player && sender.hasPermission("prisonrankup.stats")) {
+            // TODO: Send clickable ranks
+        }else{
+            sender.sendMessage(ChatColor.AQUA + "Current rank: " + player.getCurrentRank().getName());
+            sender.sendMessage(ChatColor.AQUA + "Next rank: " + player.getNextRank().getName());
+        }
+
+        // v3.1 end
+
         sender.sendMessage(ChatColor.AQUA + "UUID: " + player.getID().toString());
 
         sender.sendMessage(ChatColor.GREEN + "----------" + ChatColor.translateAlternateColorCodes('&', Message.PREFIX.toString().replaceAll(" ", "") +
