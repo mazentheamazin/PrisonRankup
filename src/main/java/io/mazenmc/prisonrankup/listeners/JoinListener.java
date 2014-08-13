@@ -87,12 +87,12 @@ public class JoinListener implements Listener {
         public void run() {
             UUIDManager uuidManager = UUIDManager.getInstance();
 
-            if(!(uuidManager.contains(event.getPlayer().getName())) &&
-                    (uuidManager.getName(event.getPlayer().getUniqueId()) != null) ||
-                    !(uuidManager.getName(event.getPlayer().getUniqueId()).equals(event.getPlayer().getName()))) {
+            //Having 2 if statemnets to avoid an NPE
+            if(!(uuidManager.contains(event.getPlayer().getName())))
+                uuidManager.getInstance().updateName(event.getPlayer().getUniqueId(), event.getPlayer().getName());
 
-                UUIDManager.getInstance().updateName(event.getPlayer().getUniqueId(), event.getPlayer().getName());
-            }
+            if(!(uuidManager.getName(event.getPlayer().getUniqueId()).equals(event.getPlayer().getName())))
+                uuidManager.updateName(event.getPlayer().getUniqueId(), event.getPlayer().getName());
 
             if(!DataManager.getInstance().contains(event.getPlayer().getUniqueId())) {
                 DataManager.getInstance().addPlayer(event.getPlayer().getName());
