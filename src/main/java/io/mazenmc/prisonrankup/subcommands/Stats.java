@@ -18,6 +18,7 @@
 
 package io.mazenmc.prisonrankup.subcommands;
 
+import com.bobacadodl.jsonchatlib.*;
 import io.mazenmc.prisonrankup.enums.Message;
 import io.mazenmc.prisonrankup.managers.RankManager;
 import io.mazenmc.prisonrankup.objects.PRPlayer;
@@ -25,11 +26,14 @@ import io.mazenmc.prisonrankup.objects.Rank;
 import io.mazenmc.prisonrankup.objects.SubCommand;
 import io.mazenmc.prisonrankup.utils.CommandUtil;
 import io.mazenmc.prisonrankup.utils.LangUtil;
+import io.mazenmc.prisonrankup.utils.StringUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import sun.management.resources.agent_pt_BR;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Stats extends SubCommand {
@@ -69,6 +73,7 @@ public class Stats extends SubCommand {
 
         List<PRPlayer> players = rank.getPlayers();
         StringBuilder stringBuilder = new StringBuilder();
+        boolean isApplicable = (sender instanceof Player && sender.hasPermission("prisonrankup.get"));
 
         sender.sendMessage(ChatColor.GREEN + "----------" + ChatColor.translateAlternateColorCodes('&', Message.PREFIX.toString().replaceAll(" ", "") + "---------"));
         sender.sendMessage(ChatColor.AQUA + rank.getName() + "'s Stats:");
@@ -79,16 +84,34 @@ public class Stats extends SubCommand {
 
         for(int i = 0; i < players.size(); i++) {
             //TODO: Make clickable player profiles
-            stringBuilder.append(players.get(i).getName());
+            String name = players.get(i).getName();
+
+            if(isApplicable) {
+                JSONChatMessage message = new JSONChatMessage("", JSONChatColor.GOLD, Collections.EMPTY_LIST);
+                JSONChatExtra extra = new JSONChatExtra(name, JSONChatColor.GOLD, Collections.EMPTY_LIST);
+
+                extra.setClickEvent(JSONChatClickEventType.RUN_COMMAND, StringUtil.buildString("/rankup get ", name));
+                extra.setHoverEvent(JSONChatHoverEventType.SHOW_TEXT, StringUtil.buildString(ChatColor.GOLD, "View ", name, "'s profile!"));
+
+                message.addExtra(extra);
+                stringBuilder.append(message.toString());
+            }else{
+                stringBuilder.append(name);
+            }
+
+
             stringBuilder.append(", ");
 
             if((i % 4) == 0) {
                 stringBuilder.append("\n");
+
                 stringBuilder.append(ChatColor.GOLD);
             }
         }
 
-        sender.sendMessage(stringBuilder.toString());
+        if(!(isApplicable)) {
+            sender.sendMessage(stringBuilder.toString());
+        }
 
         sender.sendMessage(ChatColor.GREEN + "----------" + ChatColor.translateAlternateColorCodes('&', Message.PREFIX.toString().replaceAll(" ", "") + "---------"));
     }

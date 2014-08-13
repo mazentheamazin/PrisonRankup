@@ -32,6 +32,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.text.DecimalFormat;
+
 import static io.mazenmc.prisonrankup.enums.PrisonRankupConfig.CONFIG;
 
 public class Rankup extends Command {
@@ -85,8 +87,14 @@ public class Rankup extends Command {
 
             switch(pr.getReason()) {
                 case NOHASMONEY:
+                    //v3.1 start
+                    DecimalFormat df = new DecimalFormat("#");
+                    df.setMaximumFractionDigits(0);
+
                     player.sendMessage(Message.NOT_ENOUGH_MONEY.toString().replaceAll("%rank%", pr.getNextRank().getName())
-                            .replaceAll("%price%", pr.getNextRank().getPrice().toString()));
+                            .replaceAll("%price%", df.format(pr.getNextRank().getPrice().getValue() - pr.getBalance())));
+
+                    //v3.1 end
                     break;
 
                 case TIMENEEDWAIT:

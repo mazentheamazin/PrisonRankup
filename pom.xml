@@ -127,8 +127,8 @@
         <!-- v3.1 start -->
 
         <repository>
-            <id>fanciful-mvn-repo</id>
-            <url>https://raw.github.com/mkremins/fanciful/mvn-repo/</url>
+            <id>jsonchatlib-mvn-repo</id>
+            <url>https://raw.github.com/mazentheamazin/Bukkit-JSONMessageLib/mvn-repo/</url>
         </repository>
 
         <!-- v3.1 end -->
@@ -157,9 +157,10 @@
         <!-- v3.1 start -->
 
         <dependency>
-            <groupId>mkremins</groupId>
-            <artifactId>fanciful</artifactId>
-            <version>0.1.5</version>
+            <groupId>com.bobacadodl</groupId>
+            <artifactId>JSONChatLib</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
         </dependency>
 
         <!-- v3.1 end -->
