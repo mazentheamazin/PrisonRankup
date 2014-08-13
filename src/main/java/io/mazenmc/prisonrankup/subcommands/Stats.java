@@ -18,7 +18,6 @@
 
 package io.mazenmc.prisonrankup.subcommands;
 
-import com.bobacadodl.jsonchatlib.*;
 import io.mazenmc.prisonrankup.enums.Message;
 import io.mazenmc.prisonrankup.managers.RankManager;
 import io.mazenmc.prisonrankup.objects.PRPlayer;
@@ -26,14 +25,11 @@ import io.mazenmc.prisonrankup.objects.Rank;
 import io.mazenmc.prisonrankup.objects.SubCommand;
 import io.mazenmc.prisonrankup.utils.CommandUtil;
 import io.mazenmc.prisonrankup.utils.LangUtil;
-import io.mazenmc.prisonrankup.utils.StringUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import sun.management.resources.agent_pt_BR;
 
-import java.util.Collections;
 import java.util.List;
 
 public class Stats extends SubCommand {
@@ -86,18 +82,7 @@ public class Stats extends SubCommand {
             //TODO: Make clickable player profiles
             String name = players.get(i).getName();
 
-            if(isApplicable) {
-                JSONChatMessage message = new JSONChatMessage("", JSONChatColor.GOLD, Collections.EMPTY_LIST);
-                JSONChatExtra extra = new JSONChatExtra(name, JSONChatColor.GOLD, Collections.EMPTY_LIST);
-
-                extra.setClickEvent(JSONChatClickEventType.RUN_COMMAND, StringUtil.buildString("/rankup get ", name));
-                extra.setHoverEvent(JSONChatHoverEventType.SHOW_TEXT, StringUtil.buildString(ChatColor.GOLD, "View ", name, "'s profile!"));
-
-                message.addExtra(extra);
-                stringBuilder.append(message.toString());
-            }else{
-                stringBuilder.append(name);
-            }
+            stringBuilder.append(name);
 
 
             stringBuilder.append(", ");

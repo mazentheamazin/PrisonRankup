@@ -26,7 +26,6 @@ import io.mazenmc.prisonrankup.utils.UUIDUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -53,18 +52,13 @@ public class UUIDManager extends Manager {
 
     /* Fields used for conversion Name -> UUID on Offline Mode */
     private final String AGENT = "minecraft";
-    private HttpProfileRepository REPOSITORY;
+    private HttpProfileRepository repository;
 
     private UUIDManager() {
         update();
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                REPOSITORY = new HttpProfileRepository(AGENT);
-                PrisonRankupPlugin.log("HttpProfileRepository initiated!");
-            }
-        }.runTaskAsynchronously(PrisonRankupPlugin.getInstance());
+        repository = new HttpProfileRepository(AGENT);
+        PrisonRankupPlugin.log("HttpProfileRepository initiated!");
     }
 
     /**
@@ -120,7 +114,7 @@ public class UUIDManager extends Manager {
     }
 
     public HttpProfileRepository getRepository() {
-        return REPOSITORY;
+        return repository;
     }
 
 

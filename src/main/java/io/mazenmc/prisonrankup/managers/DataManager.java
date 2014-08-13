@@ -96,7 +96,7 @@ public class DataManager extends Manager{
      */
     public PRPlayer getPlayer(String name) {
         for(PRPlayer player : players) {
-            if(player.getName().startsWith(name)) {
+            if(player.getName().startsWith(name) || player.getName().equals(name)) {
                 return player;
             }
         }

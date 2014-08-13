@@ -18,7 +18,6 @@
 
 package io.mazenmc.prisonrankup.subcommands;
 
-import com.bobacadodl.jsonchatlib.*;
 import io.mazenmc.prisonrankup.enums.Message;
 import io.mazenmc.prisonrankup.managers.DataManager;
 import io.mazenmc.prisonrankup.objects.PRPlayer;
@@ -29,8 +28,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.Collections;
 
 public class Get extends SubCommand {
 
@@ -74,32 +71,8 @@ public class Get extends SubCommand {
         sender.sendMessage(ChatColor.AQUA + player.getName() + "'s Profile:");
         sender.sendMessage(ChatColor.AQUA + "Balance: " + player.getBalance());
 
-        // v3.1 start
-
-        if(sender instanceof Player && sender.hasPermission("prisonrankup.stats")) {
-            JSONChatMessage message = new JSONChatMessage("Current rank: ", JSONChatColor.AQUA, Collections.EMPTY_LIST);
-            JSONChatExtra extra = new JSONChatExtra(player.getCurrentRank().getName(), JSONChatColor.AQUA, Collections.EMPTY_LIST);
-
-            extra.setHoverEvent(JSONChatHoverEventType.SHOW_TEXT, ChatColor.GOLD + "View rank");
-            extra.setClickEvent(JSONChatClickEventType.RUN_COMMAND, "/rankup stats " + player.getCurrentRank().getName());
-
-            message.addExtra(extra);
-            message.sendToPlayer((Player) sender);
-
-            JSONChatMessage message1 = new JSONChatMessage("Next rank: ", JSONChatColor.AQUA, Collections.EMPTY_LIST);
-            JSONChatExtra extra1 = new JSONChatExtra(player.getNextRank().getName(), JSONChatColor.AQUA, Collections.EMPTY_LIST);
-
-            extra1.setHoverEvent(JSONChatHoverEventType.SHOW_TEXT, ChatColor.GOLD + "View rank");
-            extra1.setClickEvent(JSONChatClickEventType.RUN_COMMAND, "/rankup stats " + player.getNextRank().getName());
-
-            message1.addExtra(extra1);
-            message1.sendToPlayer((Player) sender);
-        }else{
-            sender.sendMessage(ChatColor.AQUA + "Current rank: " + player.getCurrentRank().getName());
-            sender.sendMessage(ChatColor.AQUA + "Next rank: " + player.getNextRank().getName());
-        }
-
-        // v3.1 end
+        sender.sendMessage(ChatColor.AQUA + "Current rank: " + player.getCurrentRank().getName());
+        sender.sendMessage(ChatColor.AQUA + "Next rank: " + player.getNextRank().getName());
 
         sender.sendMessage(ChatColor.AQUA + "UUID: " + player.getID().toString());
 

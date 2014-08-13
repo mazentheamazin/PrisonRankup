@@ -64,56 +64,67 @@ public class JoinListener implements Listener {
 
                         // Continue the running the event
 
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                UUIDManager uuidManager = UUIDManager.getInstance();
-
-                                if(!(uuidManager.contains(event.getPlayer().getName())) &&
-                                        (uuidManager.getName(event.getPlayer().getUniqueId()) != null) ||
-                                        !(uuidManager.getName(event.getPlayer().getUniqueId()).equals(event.getPlayer().getName()))) {
-
-                                    UUIDManager.getInstance().updateName(event.getPlayer().getUniqueId(), event.getPlayer().getName());
-                                }
-
-                                if(!DataManager.getInstance().contains(event.getPlayer().getUniqueId())) {
-                                    DataManager.getInstance().addPlayer(event.getPlayer().getName());
-                                }
-
-                                if(PrisonRankupConfig.CONFIG.getBoolean("Timed Requirement")) {
-                                    long seconds = 0L;
-                                    int time = PrisonRankupConfig.CONFIG.getInt("Time Interval");
-
-                                    switch(PrisonRankupConfig.CONFIG.getString("Time type").toLowerCase().charAt(0)) {
-                                        case 's':
-                                            seconds += time;
-                                            break;
-
-                                        case 'm':
-                                            seconds += time * 60;
-                                            break;
-
-                                        case 'h':
-                                            seconds += time * 360;
-                                            break;
-                                    }
-
-                                    TimeManager.getInstance().addPlayer(DataManager.getInstance().getPlayer(event.getPlayer().getName()), seconds);
-                                }
-
-                                if(UpdaterManager.getInstance().isUpdateAvailable() && event.getPlayer().hasPermission("prisonrankup.update")) {
-                                    UpdaterManager um = UpdaterManager.getInstance();
-
-                                    event.getPlayer().sendMessage(ChatColor.GOLD + "An update is available: " + um.getName() + ", a " +
-                                            um.getType() + " for " + um.getVersion() + " available at " + um.getVersion());
-                                }
-                            }
-                        }.runTask(PrisonRankupPlugin.getInstance());
+                        new JoinRunnable(event).runTask(PrisonRankupPlugin.getInstance());
                     }catch(Exception ex) {
                         ex.printStackTrace();
                     }
                 }
             }.runTaskAsynchronously(PrisonRankupPlugin.getInstance());
+        }else{
+            new JoinRunnable(event).run();
+        }
+    }
+
+    private class JoinRunnable extends BukkitRunnable {
+
+        private PlayerJoinEvent event;
+
+        private JoinRunnable(PlayerJoinEvent event) {
+            this.event = event;
+        }
+
+        @Override
+        public void run() {
+            UUIDManager uuidManager = UUIDManager.getInstance();
+
+            if(!(uuidManager.contains(event.getPlayer().getName())) &&
+                    (uuidManager.getName(event.getPlayer().getUniqueId()) != null) ||
+                    !(uuidManager.getName(event.getPlayer().getUniqueId()).equals(event.getPlayer().getName()))) {
+
+                UUIDManager.getInstance().updateName(event.getPlayer().getUniqueId(), event.getPlayer().getName());
+            }
+
+            if(!DataManager.getInstance().contains(event.getPlayer().getUniqueId())) {
+                DataManager.getInstance().addPlayer(event.getPlayer().getName());
+            }
+
+            if(PrisonRankupConfig.CONFIG.getBoolean("Timed Requirement")) {
+                long seconds = 0L;
+                int time = PrisonRankupConfig.CONFIG.getInt("Time Interval");
+
+                switch(PrisonRankupConfig.CONFIG.getString("Time type").toLowerCase().charAt(0)) {
+                    case 's':
+                        seconds += time;
+                        break;
+
+                    case 'm':
+                        seconds += time * 60;
+                        break;
+
+                    case 'h':
+                        seconds += time * 360;
+                        break;
+                }
+
+                TimeManager.getInstance().addPlayer(DataManager.getInstance().getPlayer(event.getPlayer().getName()), seconds);
+            }
+
+            if(UpdaterManager.getInstance().isUpdateAvailable() && event.getPlayer().hasPermission("prisonrankup.update")) {
+                UpdaterManager um = UpdaterManager.getInstance();
+
+                event.getPlayer().sendMessage(ChatColor.GOLD + "An update is available: " + um.getName() + ", a " +
+                        um.getType() + " for " + um.getVersion() + " available at " + um.getVersion());
+            }
         }
     }
 }

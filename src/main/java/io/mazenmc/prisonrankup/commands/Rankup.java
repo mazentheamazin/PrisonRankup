@@ -68,6 +68,12 @@ public class Rankup extends Command {
 
         PRPlayer pr = DataManager.getInstance().getPlayer(player.getName());
 
+        if(pr == null) {
+            DataManager.getInstance().addPlayer(player.getName());
+            onExecute(player, cmd, label, args);
+            return;
+        }
+
         if(pr.canRankup()) {
 
             pr.rankup();

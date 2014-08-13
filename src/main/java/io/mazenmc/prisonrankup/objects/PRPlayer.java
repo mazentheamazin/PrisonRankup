@@ -79,7 +79,7 @@ public class PRPlayer {
             // Set the data
             String rank = "";
 
-            if(CONFIG.getBoolean("Transfer ranks to profile")) {
+            if(CONFIG.getBoolean("Transfer ranks to profile") && offlinePlayer != null) {
                 for(String s : VaultManager.getInstance().getPermission().getPlayerGroups(null, offlinePlayer)) {
                     if(RankManager.getInstance().isRank(s))
                         rank = s;
@@ -94,8 +94,6 @@ public class PRPlayer {
 
         setRank(getInstance().getRank(profile.getString("rank")));
 
-        // v3.1 start
-
         /* Time to load API data */
         for(String s : getSection().getKeys(false)) {
             // Making sure we don't load PrisonRankup's data
@@ -106,8 +104,6 @@ public class PRPlayer {
             // Add the data to the hashmap
             apiData.put(s, getSection().get(s));
         }
-
-        // v3.1 end
     }
 
     /**

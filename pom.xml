@@ -123,15 +123,6 @@
             <id>ac-repo</id>
             <url>https://raw.github.com/mazentheamazin/AccountsClient/mvn-repo/</url>
         </repository>
-
-        <!-- v3.1 start -->
-
-        <repository>
-            <id>jsonchatlib-mvn-repo</id>
-            <url>https://raw.github.com/mazentheamazin/Bukkit-JSONMessageLib/mvn-repo/</url>
-        </repository>
-
-        <!-- v3.1 end -->
     </repositories>
 
     <dependencies>
@@ -154,16 +145,6 @@
             <version>1.0</version>
         </dependency>
 
-        <!-- v3.1 start -->
-
-        <dependency>
-            <groupId>com.bobacadodl</groupId>
-            <artifactId>JSONChatLib</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <!-- v3.1 end -->
     </dependencies>
 
     <scm>
