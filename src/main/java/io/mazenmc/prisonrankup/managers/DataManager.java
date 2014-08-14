@@ -67,8 +67,6 @@ public class DataManager extends Manager{
      */
     public void addPlayer(String name) {
         players.add(new PRPlayer(name));
-
-        Bukkit.broadcastMessage(name + " was added");
     }
 
     /**
