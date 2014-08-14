@@ -1,5 +1,6 @@
 package net.craftservers.prisonrankup.Models;
 
+import io.mazenmc.prisonrankup.managers.DataManager;
 import io.mazenmc.prisonrankup.managers.RankManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -11,7 +12,7 @@ public class PRPlayer {
 
     @Deprecated
     public PRPlayer(String name) {
-        player = new io.mazenmc.prisonrankup.objects.PRPlayer(name);
+        player = DataManager.getInstance().getPlayer(name);
     }
 
     @Deprecated

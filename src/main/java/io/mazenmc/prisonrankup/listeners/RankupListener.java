@@ -52,9 +52,6 @@ public class RankupListener implements Listener{
                     return;
             }
 
-            PrisonRankupPlugin.log("" + time);
-            PrisonRankupPlugin.log("" + i);
-
             TimeManager.getInstance().addPlayer(event.getPlayer(), time);
         }
     }

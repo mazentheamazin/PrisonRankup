@@ -49,7 +49,9 @@ public class PrisonRankupPlugin extends JavaPlugin{
         // Register managers
         try{
             //initiate classes
-            ClassFinder.find("io.mazenmc.prisonrankup.managers", Manager.class, this);
+            for(Class<?> cls : ClassFinder.find("io.mazenmc.prisonrankup.managers", Manager.class, this)) {
+                getLogger().info(cls.getSimpleName());
+            }
         }catch(Exception ex) {
             getLogger().log(Level.SEVERE, "Unable to register managers, disabling plugin...", ex);
             getServer().getPluginManager().disablePlugin(this);
@@ -116,12 +118,16 @@ public class PrisonRankupPlugin extends JavaPlugin{
 
     private void cleanup() {
         try{
-            for(Class<? extends Manager> cls : ClassFinder.find("io.mazenmc.prisonrankup.managers", Manager.class, this)) {
+            for(Class<?> cls : ClassFinder.find("io.mazenmc.prisonrankup.managers", Object.class, this)) {
+                if(cls.getSimpleName().equals("Manager")) {
+                    continue;
+                }
+
                 Manager manager = (Manager) cls.getMethod("getInstance").invoke(null);
 
                 manager.cleanup();
             }
-        }catch(Exception ignored) {}
+        }catch(Exception e) {e.printStackTrace();}
     }
 
     /**

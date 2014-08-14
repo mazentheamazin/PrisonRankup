@@ -72,8 +72,6 @@ public class Rankup extends Command {
 
             pr.rankup();
 
-            pr = DataManager.getInstance().getPlayer(player.getName());
-
             PlayerRankupEvent rankupEvent = new PlayerRankupEvent(pr);
             net.craftservers.prisonrankup.Utils.Events.PlayerRankupEvent oldRankupEvent =
                     new net.craftservers.prisonrankup.Utils.Events.PlayerRankupEvent(new net.craftservers.prisonrankup.Models.PRPlayer(pr.getName()), new Rank(pr.getCurrentRank().getName()));
@@ -82,19 +80,18 @@ public class Rankup extends Command {
             Bukkit.getPluginManager().callEvent(oldRankupEvent);
 
             Bukkit.broadcastMessage(((Message.PREFIX.toString().equals("")) ? Message.RANKUP.toString() : Message.PREFIX.toString() + " " + Message.RANKUP)
-                    .replaceAll("%player%", pr.getName()).replaceAll("%rank%", pr.getCurrentRank().getName()));
+                    .replaceAll("%player%", pr.getName())
+                    .replaceAll("%rank%", pr.getCurrentRank().getName()));
         }else{
 
             switch(pr.getReason()) {
                 case NOHASMONEY:
-                    //v3.1 start
                     DecimalFormat df = new DecimalFormat("#");
                     df.setMaximumFractionDigits(0);
 
                     player.sendMessage(Message.NOT_ENOUGH_MONEY.toString().replaceAll("%rank%", pr.getNextRank().getName())
-                            .replaceAll("%price%", df.format(pr.getNextRank().getPrice().getValue() - pr.getBalance())));
-
-                    //v3.1 end
+                            .replaceAll("%price%", df.format(pr.getNextRank().getPrice().getValue() - pr.getBalance())
+                                    .replaceAll(" ", "")));
                     break;
 
                 case TIMENEEDWAIT:

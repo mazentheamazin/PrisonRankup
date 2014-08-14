@@ -274,9 +274,7 @@ public class PRPlayer {
             nextRank = getInstance().getRank(crIndex + 1);
         }
 
-        if(DataManager.getInstance() != null) {
-            DataManager.getInstance().updatePlayer(this);
-        }
+        DataManager.getInstance().updatePlayer(this);
     }
 
     /*                                       v3.1 Start                                                               */

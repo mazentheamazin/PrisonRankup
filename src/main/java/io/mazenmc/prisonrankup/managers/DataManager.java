@@ -18,11 +18,14 @@
 
 package io.mazenmc.prisonrankup.managers;
 
+import io.mazenmc.prisonrankup.PrisonRankupPlugin;
 import io.mazenmc.prisonrankup.enums.PrisonRankupConfig;
 import io.mazenmc.prisonrankup.objects.PRPlayer;
 import io.mazenmc.prisonrankup.objects.Rank;
 import io.mazenmc.prisonrankup.utils.UUIDUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +40,12 @@ public class DataManager extends Manager{
     private List<PRPlayer> players = new ArrayList<>();
 
     private DataManager() {
-        update();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                update();
+            }
+        }.runTask(PrisonRankupPlugin.getInstance());
     }
 
     /**
@@ -59,6 +67,8 @@ public class DataManager extends Manager{
      */
     public void addPlayer(String name) {
         players.add(new PRPlayer(name));
+
+        Bukkit.broadcastMessage(name + " was added");
     }
 
     /**
@@ -96,7 +106,7 @@ public class DataManager extends Manager{
      */
     public PRPlayer getPlayer(String name) {
         for(PRPlayer player : players) {
-            if(player.getName().startsWith(name) || player.getName().equals(name)) {
+            if(player.getName().equals(name)) {
                 return player;
             }
         }
@@ -127,20 +137,22 @@ public class DataManager extends Manager{
     }
 
     public void updatePlayer(PRPlayer ne) {
-        for(PRPlayer player : new ArrayList<>(players)) {
-            if(player.getName().equals(ne.getName()))
-                players.remove(player);
-        }
+        remove(ne.getName());
 
         players.add(ne);
 
         TimeManager.getInstance().update(ne);
     }
 
+    public void remove(String name) {
+        for(PRPlayer p : new ArrayList<>(players)) {
+            if(p.getName().equals(name))
+                players.remove(p);
+        }
+    }
+
     @Override
     public void cleanup() {
-        instance = null;
-
         save();
     }
 

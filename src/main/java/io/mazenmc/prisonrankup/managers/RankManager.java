@@ -20,6 +20,7 @@ package io.mazenmc.prisonrankup.managers;
 
 import io.mazenmc.prisonrankup.enums.PrisonRankupConfig;
 import io.mazenmc.prisonrankup.objects.Rank;
+import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.Collections;

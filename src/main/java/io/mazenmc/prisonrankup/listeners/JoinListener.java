@@ -89,7 +89,7 @@ public class JoinListener implements Listener {
 
             //Having 2 if statemnets to avoid an NPE
             if(!(uuidManager.contains(event.getPlayer().getName())))
-                uuidManager.getInstance().updateName(event.getPlayer().getUniqueId(), event.getPlayer().getName());
+                uuidManager.updateName(event.getPlayer().getUniqueId(), event.getPlayer().getName());
 
             if(!(uuidManager.getName(event.getPlayer().getUniqueId()).equals(event.getPlayer().getName())))
                 uuidManager.updateName(event.getPlayer().getUniqueId(), event.getPlayer().getName());
