@@ -71,7 +71,7 @@ public class UUIDManager extends Manager {
             ConfigurationSection userSection;
             UUID uuid = UUIDUtil.stringToID(s);
 
-            //Try and get the name from config
+            // Try and get the name from config
             if((userSection = dataConfig.getConfigurationSection(StringUtil.buildString("users.", s))).contains("name")) {
                 uuidData.put(uuid, userSection.getString("name"));
 
