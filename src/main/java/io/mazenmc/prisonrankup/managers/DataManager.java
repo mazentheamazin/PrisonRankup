@@ -95,14 +95,10 @@ public class DataManager extends Manager{
                 section.set("rank", rank.getName());
             }
 
-            // v3.1 start
-
             // Save API data
             for(Map.Entry<String, Object> entry : player.getData().entrySet()) {
                 section.set(entry.getKey(), entry.getValue());
             }
-
-            // v3.1 end
         }
     }
 

@@ -154,8 +154,6 @@ public class PRPlayer {
         return UUIDUtil.stringToID(id);
     }
 
-    /*                                       v3.1 Start                                                               */
-
     /**
      * Gets value of API data from key
      * @param key key used for said API data
@@ -200,8 +198,6 @@ public class PRPlayer {
     public byte getByte(String key) {
         return (Byte) get(key);
     }
-
-    /*                                           v3.1 End                                                             */
 
     /**
      * Gets the Offline player object of said player
@@ -277,8 +273,6 @@ public class PRPlayer {
         DataManager.getInstance().updatePlayer(this);
     }
 
-    /*                                       v3.1 Start                                                               */
-
     /**
      * Add API data
      * @param key Key you wish to use for said API data
@@ -327,8 +321,6 @@ public class PRPlayer {
     public Map<String, Object> getData() {
         return Collections.unmodifiableMap(apiData);
     }
-
-    /*                                           v3.1 End                                                             */
 
     /**
      * Gets the balance of the player from Vault
