@@ -50,13 +50,12 @@ public class UUIDManager extends Manager {
     private JSONParser jsonParser = new JSONParser();
     private PrisonRankupConfig dataConfig = PrisonRankupConfig.DATA;
 
-    /* Fields used for conversion Name -> UUID on Offline Mode */
-    private final String AGENT = "minecraft";
     private HttpProfileRepository repository;
 
     private UUIDManager() {
         update();
 
+        String AGENT = "minecraft";
         repository = new HttpProfileRepository(AGENT);
         PrisonRankupPlugin.log("HttpProfileRepository initiated!");
     }

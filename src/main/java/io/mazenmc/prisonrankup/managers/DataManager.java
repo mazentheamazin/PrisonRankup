@@ -22,6 +22,7 @@ import io.mazenmc.prisonrankup.PrisonRankupPlugin;
 import io.mazenmc.prisonrankup.enums.PrisonRankupConfig;
 import io.mazenmc.prisonrankup.objects.PRPlayer;
 import io.mazenmc.prisonrankup.objects.Rank;
+import io.mazenmc.prisonrankup.utils.StringUtil;
 import io.mazenmc.prisonrankup.utils.UUIDUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -57,6 +58,14 @@ public class DataManager extends Manager{
         }
 
         for(String s : dataConfig.getConfigurationSection("users").getKeys(false)) {
+            String rank;
+
+            // Update 'group' to 'rank'
+            if((rank = dataConfig.getString(StringUtil.buildString("users.", s, ".group"))) != null) {
+                dataConfig.set(StringUtil.buildString("users.", s, ".group"), null);
+                dataConfig.set(StringUtil.buildString("users.", s, ".rank"), rank);
+            }
+
             addPlayer(UUIDManager.getInstance().getName(UUIDUtil.stringToID(s)));
         }
     }
